@@ -2,7 +2,7 @@ package main
 
 import (
 	"golang-auth/config"
-	"golang-auth/internal/database"
+	"golang-auth/internal/bootstrap"
 	"golang-auth/internal/http"
 	"log"
 	"os"
@@ -13,11 +13,10 @@ import (
 func main() {
 	config.InitConfig()
 
-	database.InitDB()
-	defer database.DB.Close()
+	bootstrap.Initialize()
+	defer bootstrap.Shutdown()
 
 	e := echo.New()
-
 	http.SetupRoutes(e)
 
 	port := os.Getenv("PORT")
